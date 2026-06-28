@@ -123,29 +123,72 @@ function CurtainLoader() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
-          className="curtain-loader"
-          initial={{ scaleY: 1 }}
-          animate={{ scaleY: 0 }}
-          exit={{ scaleY: 0 }}
-          transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.8 }}
-          onAnimationComplete={() => setVisible(false)}
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#061d15", color: "var(--color-cloud-white)" }}
-        >
+        <div style={{ position: "fixed", inset: 0, zIndex: 999999, pointerEvents: "none" }}>
+          {/* Panel 1: Cyber Pink */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{ textAlign: "center" }}
+            initial={{ scaleY: 1 }}
+            animate={{ scaleY: 0 }}
+            exit={{ scaleY: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "var(--color-action-pink)",
+              transformOrigin: "top",
+              zIndex: 10
+            }}
+          />
+          {/* Panel 2: Acid Purple */}
+          <motion.div
+            initial={{ scaleY: 1 }}
+            animate={{ scaleY: 0 }}
+            exit={{ scaleY: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "var(--color-action-purple)",
+              transformOrigin: "top",
+              zIndex: 20
+            }}
+          />
+          {/* Panel 3: Void Black Stage */}
+          <motion.div
+            className="curtain-loader"
+            initial={{ scaleY: 1 }}
+            animate={{ scaleY: 0 }}
+            exit={{ scaleY: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.5 }}
+            onAnimationComplete={() => setVisible(false)}
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "var(--color-sky-canvas)",
+              color: "var(--color-cloud-white)",
+              transformOrigin: "top",
+              zIndex: 30,
+              pointerEvents: "auto"
+            }}
           >
-            <h1 className="air-display" style={{ fontSize: "60px", color: "var(--color-cloud-white)" }}>
-              Rajath O S
-            </h1>
-            <p className="air-caption" style={{ letterSpacing: "0.2em", textTransform: "uppercase", marginTop: "1rem", opacity: 0.8, color: "var(--color-cloud-white)" }}>
-              Move Fast. Build to Last.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              style={{ textAlign: "center" }}
+            >
+              <h1 className="air-display" style={{ fontSize: "clamp(3.5rem, 9vw, 6.5rem)", color: "var(--color-action-blue)", textShadow: "4px 4px 0px var(--color-action-pink)" }}>
+                Rajath O S
+              </h1>
+              <p className="air-caption" style={{ letterSpacing: "0.3em", textTransform: "uppercase", marginTop: "1.5rem", fontWeight: 900, color: "var(--color-action-yellow)" }}>
+                Move Fast. Build to Last.
+              </p>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
@@ -216,13 +259,13 @@ function CursorFollower() {
   );
 }
 
-function Reveal({ children, delay = 0, y = 30, scale = 0.97 }) {
+function Reveal({ children, delay = 0, y = 40, scale = 0.95 }) {
   return (
     <motion.div
       initial={{ opacity: 0, y, scale }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-6% 0px" }}
-      transition={{ duration: 0.85, ease: [0.25, 1, 0.5, 1], delay }}
+      viewport={{ once: true, margin: "-5% 0px" }}
+      transition={{ type: "spring", stiffness: 85, damping: 12, delay }}
       style={{ transformOrigin: "center center", width: "100%" }}
     >
       {children}
@@ -284,7 +327,12 @@ function Navbar() {
 
   return (
     <>
-      <nav className={`nav-bar-air ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
+      <motion.nav 
+        initial={{ y: -120, x: "-50%" }}
+        animate={{ y: 0, x: "-50%" }}
+        transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.8 }}
+        className={`nav-bar-air ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}
+      >
         <a href="#hero" className="nav-wordmark" onClick={() => setMenuOpen(false)}>
           RAJATH O S
         </a>
@@ -329,7 +377,7 @@ function Navbar() {
           <span className={`hamburger-line ${menuOpen ? "open" : ""}`} />
           <span className={`hamburger-line ${menuOpen ? "open" : ""}`} />
         </button>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Drawer Menu Overlay */}
       <AnimatePresence>
@@ -484,10 +532,10 @@ function HeroSection() {
               height: "100%",
               objectFit: "cover",
               filter: videoSrc === "/aston_martin.mp4"
-                ? "saturate(1.2) brightness(0.95) contrast(1.1)" // Increased brightness for excellent visibility
+                ? "hue-rotate(280deg) saturate(1.8) brightness(1.05) contrast(1.2)"
                 : videoSrc === "/comet.mp4" 
-                ? "hue-rotate(130deg) saturate(1.4) brightness(0.95) contrast(1.1)" // Shipped comet brightness up
-                : "hue-rotate(300deg) saturate(1.1) brightness(0.85) contrast(1.15)", // Shipped snapchat brightness up
+                ? "hue-rotate(240deg) saturate(2.0) brightness(1.05) contrast(1.25)"
+                : "hue-rotate(320deg) saturate(1.6) brightness(1.0) contrast(1.2)",
               mixBlendMode: videoSrc === "/comet.mp4" ? "screen" : "normal"
             }}
           />
@@ -498,7 +546,7 @@ function HeroSection() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(circle at center, rgba(6, 29, 21, 0.1) 40%, var(--color-sky-canvas) 90%)",
+            background: "radial-gradient(circle at center, rgba(12, 10, 22, 0.15) 40%, var(--color-sky-canvas) 90%)",
             pointerEvents: "none"
           }}
         />
@@ -851,12 +899,23 @@ function AboutSection() {
           <Reveal delay={0.15}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               {stats.map(s => (
-                <div key={s.label} className="card-haze" style={{ textAlign: "center" }}>
-                  <div className="air-heading-lg" style={{ color: "var(--color-action-blue)", fontWeight: 900, lineHeight: 1 }}>
+                <motion.div 
+                  key={s.label} 
+                  className="card-haze" 
+                  style={{ textAlign: "center" }}
+                  whileHover={{ 
+                    scale: 1.06, 
+                    borderColor: "var(--color-action-blue)",
+                    boxShadow: "0px 10px 20px rgba(0, 255, 200, 0.15)",
+                    y: -5
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 12 }}
+                >
+                  <div className="air-heading-lg" style={{ color: "var(--color-action-blue)", fontWeight: 950, lineHeight: 1, textShadow: "2px 2px 0px var(--color-action-pink)" }}>
                     {s.val}
                   </div>
-                  <div className="air-caption" style={{ opacity: 0.6, marginTop: "0.5rem", fontWeight: "bold", textTransform: "uppercase" }}>{s.label}</div>
-                </div>
+                  <div className="air-caption" style={{ opacity: 0.8, marginTop: "0.5rem", fontWeight: "bold", textTransform: "uppercase", color: "var(--color-action-yellow)" }}>{s.label}</div>
+                </motion.div>
               ))}
             </div>
           </Reveal>
@@ -922,19 +981,27 @@ function SkillsSection() {
                 </div>
 
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {list.map(sk => (
-                    <span 
+                  {list.map((sk, skIdx) => (
+                    <motion.span 
                       key={sk} 
                       className="card-haze"
                       style={{
                         padding: "6px 14px",
                         fontSize: "13px",
                         borderRadius: "8px",
-                        border: "1px solid rgba(0,0,0,0.03)"
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        display: "inline-block"
                       }}
+                      whileHover={{ 
+                        scale: 1.12, 
+                        rotate: skIdx % 2 === 0 ? 3 : -3,
+                        borderColor: "var(--color-action-pink)",
+                        color: "var(--color-action-pink)"
+                      }}
+                      transition={{ type: "spring", stiffness: 350, damping: 10 }}
                     >
                       {sk}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </div>
@@ -1058,76 +1125,87 @@ function ProjectsCarousel() {
 
             {/* Screen */}
             <div style={{ flex: 1, padding: "2rem", fontFamily: "monospace", fontSize: "12px", color: "var(--color-charcoal-text)", overflow: "hidden", position: "relative" }}>
-              {index === 0 ? (
-                /* AI CODE MENTOR LOGS */
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%" }}>
-                  <div><span style={{ color: "var(--color-action-blue)" }}>import</span> AI <span style={{ color: "var(--color-action-blue)" }}>from</span> <span style={{ opacity: 0.8 }}>"@groq/sdk"</span>;</div>
-                  <div><span style={{ color: "var(--color-action-blue)" }}>const</span> mentor = <span style={{ color: "var(--color-action-blue)" }}>new</span> AI.Mentor();</div>
-                  <div style={{ color: "rgba(0,0,0,0.4)" }}>// Analysing dynamic schemas...</div>
-                  <div><span style={{ color: "var(--color-action-blue)" }}>await</span> mentor.review(database.schema);</div>
-                  
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    key="mentor-notif"
-                    style={{
-                      marginTop: "auto",
-                      backgroundColor: "var(--color-cloud-white)",
-                      border: "1px solid rgba(0,0,0,0.1)",
-                      borderRadius: "8px",
-                      padding: "1rem",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.4rem"
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", color: "var(--color-action-blue)", fontSize: "11px", fontWeight: "bold" }}>
-                      <span>💡 SYSTEM RECOMMENDATION</span>
-                      <span>JWT: OK</span>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  style={{ height: "100%" }}
+                >
+                  {index === 0 ? (
+                    /* AI CODE MENTOR LOGS */
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%" }}>
+                      <div><span style={{ color: "var(--color-action-blue)" }}>import</span> AI <span style={{ color: "var(--color-action-blue)" }}>from</span> <span style={{ opacity: 0.8 }}>"@groq/sdk"</span>;</div>
+                      <div><span style={{ color: "var(--color-action-blue)" }}>const</span> mentor = <span style={{ color: "var(--color-action-blue)" }}>new</span> AI.Mentor();</div>
+                      <div style={{ color: "rgba(255,255,255,0.4)" }}>// Analysing dynamic schemas...</div>
+                      <div><span style={{ color: "var(--color-action-blue)" }}>await</span> mentor.review(database.schema);</div>
+                      
+                      <motion.div 
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        key="mentor-notif"
+                        style={{
+                          marginTop: "auto",
+                          backgroundColor: "rgba(255, 255, 255, 0.05)",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          borderRadius: "8px",
+                          padding: "1rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.4rem"
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", color: "var(--color-action-blue)", fontSize: "11px", fontWeight: "bold" }}>
+                          <span>💡 SYSTEM RECOMMENDATION</span>
+                          <span>JWT: OK</span>
+                        </div>
+                        <p style={{ color: "var(--color-charcoal-text)", fontSize: "11px", opacity: 0.85 }}>
+                          Database optimization found: Index queries in User schemas to improve search speed by 40%.
+                        </p>
+                      </motion.div>
                     </div>
-                    <p style={{ color: "var(--color-charcoal-text)", fontSize: "11px", opacity: 0.8 }}>
-                      Database optimization found: Index queries in User schemas to improve search speed by 40%.
-                    </p>
-                  </motion.div>
-                </div>
-              ) : (
-                /* AI EXAM EVALUATION MOCKUP */
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
-                  <div style={{ borderBottom: "1px solid rgba(0,0,0,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between" }}>
-                    <span style={{ fontWeight: "bold" }}>OCR EXTRACTOR</span>
-                    <span style={{ color: "var(--color-action-blue)", fontWeight: "bold" }}>COMPLETED</span>
-                  </div>
-                  
-                  <div style={{ fontStyle: "italic", opacity: 0.7, fontSize: "11px" }}>
-                    "Answer: React utilizes a virtual DOM to optimize client updates. It renders elements dynamically."
-                  </div>
+                  ) : (
+                    /* AI EXAM EVALUATION MOCKUP */
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
+                      <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between" }}>
+                        <span style={{ fontWeight: "bold" }}>OCR EXTRACTOR</span>
+                        <span style={{ color: "var(--color-action-blue)", fontWeight: "bold" }}>COMPLETED</span>
+                      </div>
+                      
+                      <div style={{ fontStyle: "italic", opacity: 0.7, fontSize: "11px" }}>
+                        "Answer: React utilizes a virtual DOM to optimize client updates. It renders elements dynamically."
+                      </div>
 
-                  <div style={{ borderTop: "1px dashed rgba(0,0,0,0.1)", paddingTop: "0.5rem" }}>
-                    <span style={{ color: "var(--color-action-blue)" }}>Gemini Kannada Translation:</span>
-                    <p style={{ opacity: 0.7, fontSize: "11px", marginTop: "4px" }}>
-                      ರಿಯಾಕ್ಟ್ ಕ್ಲೈಂಟ್ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಆಪ್ಟಿಮೈಸ್ ಮಾಡಲು ವರ್ಚುವಲ್ DOM ಅನ್ನು ಬಳಸುತ್ತದೆ...
-                    </p>
-                  </div>
+                      <div style={{ borderTop: "1px dashed rgba(255,255,255,0.1)", paddingTop: "0.5rem" }}>
+                        <span style={{ color: "var(--color-action-blue)" }}>Gemini Kannada Translation:</span>
+                        <p style={{ opacity: 0.7, fontSize: "11px", marginTop: "4px" }}>
+                          ರಿಯಾಕ್ಟ್ ಕ್ಲೈಂಟ್ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಆಪ್ಟಿಮೈಸ್ ಮಾಡಲು ವರ್ಚುವಲ್ DOM ಅನ್ನು ಬಳಸುತ್ತದೆ...
+                        </p>
+                      </div>
 
-                  <motion.div 
-                    initial={{ opacity: 0, rotate: -2 }}
-                    animate={{ opacity: 1, rotate: 0 }}
-                    key="exam-score"
-                    style={{
-                      marginTop: "auto",
-                      alignSelf: "flex-end",
-                      backgroundColor: "rgba(43, 127, 255, 0.1)",
-                      border: "1px solid var(--color-action-blue)",
-                      borderRadius: "6px",
-                      padding: "6px 12px",
-                      color: "var(--color-action-blue)",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    MARKS: 10/10 [PASS]
-                  </motion.div>
-                </div>
-              )}
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        key="exam-score"
+                        style={{
+                          marginTop: "auto",
+                          alignSelf: "flex-end",
+                          backgroundColor: "rgba(0, 255, 200, 0.1)",
+                          border: "1px solid var(--color-action-blue)",
+                          borderRadius: "6px",
+                          padding: "6px 12px",
+                          color: "var(--color-action-blue)",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        MARKS: 10/10 [PASS]
+                      </motion.div>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
