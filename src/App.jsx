@@ -785,6 +785,7 @@ function AboutSection() {
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const aboutRef = useRef(null);
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -794,8 +795,45 @@ function AboutSection() {
     mouseY.set(yOffset);
   };
 
+  const { scrollYProgress } = useScroll({
+    target: aboutRef,
+    offset: ["start end", "end start"]
+  });
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 5.9]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setFrame(Math.min(5, Math.max(0, Math.floor(latest))));
+  });
+
+  const aboutFrames = [
+    "/about_part_1.jpg",
+    "/about_part_2.jpg",
+    "/about_part_3.jpg",
+    "/about_part_4.jpg",
+    "/about_part_5.jpg",
+    "/about_part_6.jpg"
+  ];
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
   return (
-    <section id="about" className="sky-section" onMouseMove={handleMouseMove}>
+    <section id="about" ref={aboutRef} className="sky-section" onMouseMove={handleMouseMove}>
+      <motion.img 
+        key={frame}
+        src={aboutFrames[frame]} 
+        className="glass-visual-wrap glass-visual-panel" 
+        alt="Network Sphere Sequence"
+        style={{ 
+          x: smoothX, 
+          y: smoothY,
+          opacity: 0.18,
+          mixBlendMode: "screen",
+          borderRadius: "24px"
+        }}
+      />
 
       <div style={{
         position: "relative",
@@ -903,6 +941,7 @@ function AboutSection() {
 function SkillsSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const skillsRef = useRef(null);
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -912,8 +951,44 @@ function SkillsSection() {
     mouseY.set(yOffset);
   };
 
+  const { scrollYProgress } = useScroll({
+    target: skillsRef,
+    offset: ["start end", "end start"]
+  });
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 4.9]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setFrame(Math.min(4, Math.max(0, Math.floor(latest))));
+  });
+
+  const skillsFrames = [
+    "/skills_part_1.jpg",
+    "/skills_part_2.jpg",
+    "/skills_part_3.jpg",
+    "/skills_part_4.jpg",
+    "/skills_part_5.jpg"
+  ];
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
   return (
-    <section id="skills" className="sky-section" onMouseMove={handleMouseMove}>
+    <section id="skills" ref={skillsRef} className="sky-section" onMouseMove={handleMouseMove}>
+      <motion.img 
+        key={frame}
+        src={skillsFrames[frame]} 
+        className="glass-visual-wrap glass-visual-ribbon" 
+        alt="Database Server sequence"
+        style={{ 
+          x: smoothX, 
+          y: smoothY,
+          opacity: 0.18,
+          mixBlendMode: "screen",
+          borderRadius: "24px"
+        }}
+      />
 
       <div style={{
         position: "relative",
