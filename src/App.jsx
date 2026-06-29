@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence, useSpring, useMotionValue, useScroll, useTransform } from "framer-motion";
 
-const HERO_VIDEO_SRC = "/comet.mp4"; // Toggle to "/theme_video.mp4" if preferred
+const HERO_VIDEO_SRC = "/comet.mp4";
 
 // ─── UTILITIES & HOOKS ──────────────────────────────────────────────────────
 
@@ -446,7 +446,6 @@ function HeroSection() {
   const toggleVideo = () => {
     setVideoSrc(current => {
       if (current === "/aston_martin.mp4") return "/comet.mp4";
-      if (current === "/comet.mp4") return "/theme_video.mp4";
       return "/aston_martin.mp4";
     });
   };
@@ -533,9 +532,7 @@ function HeroSection() {
               objectFit: "cover",
               filter: videoSrc === "/aston_martin.mp4"
                 ? "hue-rotate(280deg) saturate(1.8) brightness(1.05) contrast(1.2)"
-                : videoSrc === "/comet.mp4" 
-                ? "hue-rotate(240deg) saturate(2.0) brightness(1.05) contrast(1.25)"
-                : "hue-rotate(320deg) saturate(1.6) brightness(1.0) contrast(1.2)",
+                : "hue-rotate(240deg) saturate(2.0) brightness(1.05) contrast(1.25)",
               mixBlendMode: videoSrc === "/comet.mp4" ? "screen" : "normal"
             }}
           />
@@ -724,7 +721,7 @@ function HeroSection() {
                       gap: "4px"
                     }}
                   >
-                    {videoSrc === "/aston_martin.mp4" ? "ASTON MARTIN" : videoSrc === "/comet.mp4" ? "COSMIC COMET" : "SNAP THEME"} ⇄
+                    {videoSrc === "/aston_martin.mp4" ? "ASTON MARTIN" : "COSMIC COMET"} ⇄
                   </button>
                 </div>
                 <div style={{ marginTop: "auto", display: "flex", gap: "6px", alignItems: "center" }}>
