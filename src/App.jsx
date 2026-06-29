@@ -549,13 +549,7 @@ function HeroSection() {
         />
       </div>
 
-      {/* Floating glass shapes */}
-      <motion.img 
-        src="/frosted_glass_hero.png" 
-        className="glass-visual-wrap glass-visual-hero" 
-        alt="Frosted Glass shapes"
-        style={{ x: smoothX, y: smoothY, zIndex: 1 }}
-      />
+
 
       {/* Responsive watermark */}
       <motion.div 
