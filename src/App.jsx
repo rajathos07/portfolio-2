@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence, useSpring, useMotionValue, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useSpring, useMotionValue, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import heroImg from "./assets/hero.png";
 
-const HERO_VIDEO_SRC = "/comet.mp4";
+
 
 // ─── UTILITIES & HOOKS ──────────────────────────────────────────────────────
 
@@ -441,14 +442,7 @@ function HeroSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const heroRef = useRef(null);
-  const [videoSrc, setVideoSrc] = useState("/aston_martin.mp4");
 
-  const toggleVideo = () => {
-    setVideoSrc(current => {
-      if (current === "/aston_martin.mp4") return "/comet.mp4";
-      return "/aston_martin.mp4";
-    });
-  };
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -477,6 +471,22 @@ function HeroSection() {
   const scale = useTransform(scrollYProgress, [0, 0.6], [1.25, 0.85]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [0.85, 0]);
   const videoY = useTransform(scrollYProgress, [0, 0.6], [0, 100]);
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 5.9]);
+  const [heroFrame, setHeroFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setHeroFrame(Math.min(5, Math.max(0, Math.floor(latest))));
+  });
+
+  const heroFrames = [
+    "/computer_part_1.jpg",
+    "/computer_part_2.jpg",
+    "/computer_part_3.jpg",
+    "/computer_part_4.jpg",
+    "/computer_part_5.jpg",
+    "/computer_part_6.jpg"
+  ];
 
   // 3D Visuals & Zoom-out effects on cards
   const cardScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.92]);
@@ -519,21 +529,14 @@ function HeroSection() {
             y: videoY
           }}
         >
-          <video
-            key={videoSrc}
-            src={videoSrc}
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            key={heroFrame}
+            src={heroFrames[heroFrame]}
+            alt="Computer assembly animation frame"
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "cover",
-              filter: videoSrc === "/aston_martin.mp4"
-                ? "hue-rotate(280deg) saturate(1.8) brightness(1.05) contrast(1.2)"
-                : "hue-rotate(240deg) saturate(2.0) brightness(1.05) contrast(1.25)",
-              mixBlendMode: videoSrc === "/comet.mp4" ? "screen" : "normal"
+              objectFit: "cover"
             }}
           />
         </motion.div>
@@ -697,26 +700,15 @@ function HeroSection() {
                 <div><span style={{ opacity: 0.5 }}>$</span> location: <span style={{ fontWeight: "bold" }}>Bengaluru, IN</span></div>
                 <div><span style={{ opacity: 0.5 }}>$</span> core_stack: <span style={{ opacity: 0.8 }}>[Java, Spring, MERN, AI]</span></div>
                 <div>
-                  <span style={{ opacity: 0.5 }}>$</span> video_theme:{" "}
-                  <button
-                    className="clickable"
-                    onClick={toggleVideo}
-                    style={{
-                      background: "rgba(0, 191, 115, 0.1)",
-                      border: "1px solid rgba(0, 191, 115, 0.25)",
-                      borderRadius: "4px",
-                      padding: "2px 6px",
-                      fontSize: "10px",
-                      fontFamily: "var(--font-control-tnt)",
-                      color: "var(--color-action-blue)",
-                      cursor: "pointer",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "4px"
-                    }}
-                  >
-                    {videoSrc === "/aston_martin.mp4" ? "ASTON MARTIN" : "COSMIC COMET"} ⇄
-                  </button>
+                  <span style={{ opacity: 0.5 }}>$</span> hardware_build:{" "}
+                  <span style={{ color: "var(--color-action-blue)", fontWeight: "bold" }}>
+                    {heroFrame === 0 ? "SOCKET_OPEN" :
+                     heroFrame === 1 ? "CHIP_LOWERING" :
+                     heroFrame === 2 ? "BRACKET_CLOSING" :
+                     heroFrame === 3 ? "LEVER_LOCKING" :
+                     heroFrame === 4 ? "COOLER_HOVERING" :
+                     "SYSTEM_READY"}
+                  </span>
                 </div>
                 <div style={{ marginTop: "auto", display: "flex", gap: "6px", alignItems: "center" }}>
                   <span className="pulse-live-dot" style={{ width: 6, height: 6 }} />
@@ -804,12 +796,6 @@ function AboutSection() {
 
   return (
     <section id="about" className="sky-section" onMouseMove={handleMouseMove}>
-      <motion.img 
-        src="/frosted_glass_panel.png" 
-        className="glass-visual-wrap glass-visual-panel" 
-        alt="Frosted Glass Panel"
-        style={{ x: mouseX, y: mouseY }}
-      />
 
       <div style={{
         position: "relative",
@@ -875,12 +861,9 @@ function AboutSection() {
             <div className="card-cloud" style={{ padding: "12px", display: "flex", justifyContent: "center" }}>
               <div className="image-frame" style={{ width: "100%" }}>
                 <img 
-                  src="/src/assets/hero.png" 
+                  src={heroImg} 
                   alt="Portrait" 
                   style={{ width: "100%", height: "auto", display: "block", filter: "contrast(102%)" }} 
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                  }}
                 />
               </div>
             </div>
@@ -931,12 +914,6 @@ function SkillsSection() {
 
   return (
     <section id="skills" className="sky-section" onMouseMove={handleMouseMove}>
-      <motion.img 
-        src="/frosted_glass_ribbon.png" 
-        className="glass-visual-wrap glass-visual-ribbon" 
-        alt="Frosted Glass Ribbon"
-        style={{ x: mouseX, y: mouseY }}
-      />
 
       <div style={{
         position: "relative",
@@ -1387,12 +1364,6 @@ function EducationSection() {
 
   return (
     <section id="education" className="sky-section" onMouseMove={handleMouseMove}>
-      <motion.img 
-        src="/frosted_glass_college.png" 
-        className="glass-visual-wrap glass-visual-ribbon" 
-        alt="Frosted glass college graduation cap and diploma backdrop" 
-        style={{ x: mouseX, y: mouseY, bottom: "10%", left: "5%" }}
-      />
 
       <div style={{
         position: "relative",
@@ -1753,6 +1724,68 @@ function Footer() {
   );
 }
 
+// ─── SCROLL ANIMATED CRYSTAL PRISM ──────────────────────────────────────────
+
+function ScrollPrism() {
+  const { scrollYProgress } = useScroll();
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 19]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    const idx = Math.floor(latest) % 5;
+    setFrame(idx);
+  });
+
+  const prismFrames = [
+    "/glass_prism_hero.png",
+    "/glass_prism_secondary.png",
+    "/glass_prism_three.png",
+    "/glass_prism_four.png",
+    "/glass_prism_five.png"
+  ];
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      mouseX.set((clientX - window.innerWidth / 2) * 0.02);
+      mouseY.set((clientY - window.innerHeight / 2) * 0.02);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  return (
+    <motion.div
+      className="scroll-prism-container"
+      style={{
+        position: "fixed",
+        right: "6%",
+        top: "28%",
+        width: "clamp(240px, 20vw, 360px)",
+        height: "auto",
+        zIndex: 1,
+        pointerEvents: "none",
+        opacity: 0.35,
+        x: smoothX,
+        y: smoothY,
+        filter: "drop-shadow(0px 10px 30px rgba(43, 127, 255, 0.12))"
+      }}
+    >
+      <img
+        src={prismFrames[frame]}
+        alt="Animated Glass Prism"
+        style={{ width: "100%", height: "auto" }}
+      />
+    </motion.div>
+  );
+}
+
 // ─── MAIN PORTFOLIO COMPONENT ───────────────────────────────────────────────
 
 export default function PortfolioRedesign() {
@@ -1968,11 +2001,20 @@ export default function PortfolioRedesign() {
             justify-self: center !important;
           }
         }
+        .scroll-prism-container {
+          display: block;
+        }
+        @media (max-width: 1024px) {
+          .scroll-prism-container {
+            display: none !important;
+          }
+        }
       `}</style>
 
       {/* Main Premium Curtains and Cursor */}
       <CurtainLoader />
       <CursorFollower />
+      <ScrollPrism />
 
       <div className="sky-stage">
         <Navbar />
