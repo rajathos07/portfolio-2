@@ -819,21 +819,55 @@ function AboutSection() {
   const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
   const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
 
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [1.15, 1.0, 1.0, 0.9]);
+
   return (
     <section id="about" ref={aboutRef} className="sky-section" onMouseMove={handleMouseMove}>
-      <motion.img 
-        key={frame}
-        src={aboutFrames[frame]} 
-        className="glass-visual-wrap glass-visual-panel" 
-        alt="Network Sphere Sequence"
-        style={{ 
-          x: smoothX, 
-          y: smoothY,
-          opacity: 0.18,
-          mixBlendMode: "screen",
-          borderRadius: "24px"
+      {/* Background Scroll-Driven Animation (Full Cover) */}
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0
         }}
-      />
+      >
+        <motion.div
+          style={{
+            width: "100%",
+            height: "100%",
+            scale: bgScale,
+            opacity: bgOpacity,
+            x: smoothX,
+            y: smoothY
+          }}
+        >
+          <img
+            key={frame}
+            src={aboutFrames[frame]}
+            alt="Network assembly background"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.22,
+              mixBlendMode: "screen"
+            }}
+          />
+        </motion.div>
+        
+        {/* Soft radial overlay to blend the background edges smoothly */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(circle at center, rgba(9, 9, 14, 0.15) 30%, var(--color-sky-canvas) 90%)",
+            pointerEvents: "none"
+          }}
+        />
+      </div>
 
       <div style={{
         position: "relative",
@@ -974,21 +1008,55 @@ function SkillsSection() {
   const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
   const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
 
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [1.15, 1.0, 1.0, 0.9]);
+
   return (
     <section id="skills" ref={skillsRef} className="sky-section" onMouseMove={handleMouseMove}>
-      <motion.img 
-        key={frame}
-        src={skillsFrames[frame]} 
-        className="glass-visual-wrap glass-visual-ribbon" 
-        alt="Database Server sequence"
-        style={{ 
-          x: smoothX, 
-          y: smoothY,
-          opacity: 0.18,
-          mixBlendMode: "screen",
-          borderRadius: "24px"
+      {/* Background Scroll-Driven Animation (Full Cover) */}
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0
         }}
-      />
+      >
+        <motion.div
+          style={{
+            width: "100%",
+            height: "100%",
+            scale: bgScale,
+            opacity: bgOpacity,
+            x: smoothX,
+            y: smoothY
+          }}
+        >
+          <img
+            key={frame}
+            src={skillsFrames[frame]}
+            alt="Skills database background"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.22,
+              mixBlendMode: "screen"
+            }}
+          />
+        </motion.div>
+        
+        {/* Soft radial overlay to blend the background edges smoothly */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(circle at center, rgba(9, 9, 14, 0.15) 30%, var(--color-sky-canvas) 90%)",
+            pointerEvents: "none"
+          }}
+        />
+      </div>
 
       <div style={{
         position: "relative",
