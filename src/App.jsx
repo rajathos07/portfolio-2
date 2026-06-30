@@ -110,14 +110,14 @@ const PROJECTS = [
   },
   {
     num: "03",
-    ref: "IFS-0525",
-    title: "InstaFoods",
-    year: "2025",
-    tag: "MERN · Food Tech",
-    desc: "Full-stack food ordering platform with a responsive user interface, real-time cart updates, secure user authentication, and seamless order management.",
-    tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Redux", "TailwindCSS"],
+    ref: "IFS-0626",
+    title: "Instafoods",
+    year: "2026",
+    tag: "Java · MySQL",
+    desc: "A premium, dark-themed food delivery application built for Bengaluru, featuring a neon-accented UI, local storage cart flow, Java Servlet backend, and a custom order tracking timeline.",
+    tech: ["Java", "Servlet", "MySQL", "JDBC", "HTML/CSS", "JavaScript", "Apache Tomcat", "Maven"],
     live: "https://instafoods.onrender.com/",
-    github: "https://github.com/rajathos07/instafoods.git"
+    github: "https://github.com/rajathos07/InstaFoods.git"
   }
 ];
 
