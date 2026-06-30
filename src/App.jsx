@@ -1341,7 +1341,7 @@ function ProjectsCarousel() {
                   transition={{ duration: 0.35, ease: "easeOut" }}
                   style={{ height: "100%" }}
                 >
-                  {index === 0 ? (
+                  {index === 0 && (
                     /* AI CODE MENTOR LOGS */
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%" }}>
                       <div><span style={{ color: "var(--color-action-blue)" }}>import</span> AI <span style={{ color: "var(--color-action-blue)" }}>from</span> <span style={{ opacity: 0.8 }}>"@groq/sdk"</span>;</div>
@@ -1373,7 +1373,9 @@ function ProjectsCarousel() {
                         </p>
                       </motion.div>
                     </div>
-                  ) : (
+                  )}
+
+                  {index === 1 && (
                     /* AI EXAM EVALUATION MOCKUP */
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
                       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between" }}>
@@ -1408,6 +1410,55 @@ function ProjectsCarousel() {
                         }}
                       >
                         MARKS: 10/10 [PASS]
+                      </motion.div>
+                    </div>
+                  )}
+
+                  {index === 2 && (
+                    /* INSTAFOODS LIVE SNAPSHOT MOCKUP */
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
+                      <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontWeight: "bold", color: "#caff00" }}>🚴 INSTA-TRACKER v1.2</span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "10px", color: "#caff00" }}>
+                          <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#caff00", display: "inline-block" }} />
+                          LIVE UPLINK
+                        </span>
+                      </div>
+                      
+                      <div style={{ fontSize: "11px", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                        <div><span style={{ opacity: 0.5 }}>Restaurant:</span> Nagarjuna Restaurant (Indiranagar)</div>
+                        <div><span style={{ opacity: 0.5 }}>Order Items:</span> 1x South Indian Biryani Feast, 1x Guntur Chicken</div>
+                        <div><span style={{ opacity: 0.5 }}>Delivery To:</span> Bengaluru, IN (12.9716° N)</div>
+                      </div>
+
+                      <div style={{ borderTop: "1px dashed rgba(255,255,255,0.1)", paddingTop: "0.5rem", display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <span style={{ color: "var(--color-action-blue)", fontWeight: "bold", fontSize: "11px" }}>STATUS FEED:</span>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "2px", fontSize: "10px", opacity: 0.8, fontFamily: "monospace" }}>
+                          <div>[19:05:12] Order successfully placed (INR 680)</div>
+                          <div>[19:06:40] Kitchen accepted & packing meal</div>
+                          <div style={{ color: "#caff00" }}>[19:07:33] Out for delivery with Rider #07</div>
+                        </div>
+                      </div>
+
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        key="tracker-progress"
+                        style={{
+                          marginTop: "auto",
+                          backgroundColor: "rgba(202, 255, 0, 0.08)",
+                          border: "1px solid #caff00",
+                          borderRadius: "6px",
+                          padding: "6px 12px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "11px",
+                          color: "#caff00",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        <span>SHIPPING STATUS: IN TRANSIT (94%)</span>
+                        <span>ETA: 4 MINS</span>
                       </motion.div>
                     </div>
                   )}
