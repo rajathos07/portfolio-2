@@ -107,6 +107,17 @@ const PROJECTS = [
     tech: ["React.js", "Node.js", "Express.js", "MySQL", "OCR", "Gemini API"],
     live: null,
     github: "https://github.com/rajathos07/text_processing.git"
+  },
+  {
+    num: "03",
+    ref: "IFS-0525",
+    title: "InstaFoods",
+    year: "2025",
+    tag: "MERN · Food Tech",
+    desc: "Full-stack food ordering platform with a responsive user interface, real-time cart updates, secure user authentication, and seamless order management.",
+    tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Redux", "TailwindCSS"],
+    live: "https://instafoods.onrender.com/",
+    github: "https://github.com/rajathos07/instafoods.git"
   }
 ];
 
