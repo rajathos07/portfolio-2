@@ -1130,6 +1130,42 @@ function ProjectsCarousel() {
   const autoplayTimer = useRef(null);
   const slideDuration = 6000;
 
+  const projectsRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    mouseX.set((clientX - window.innerWidth / 2) * -0.02);
+    mouseY.set((clientY - window.innerHeight / 2) * 0.02);
+  };
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  const { scrollYProgress } = useScroll({
+    target: projectsRef,
+    offset: ["start end", "end start"]
+  });
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 4.9]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setFrame(Math.min(4, Math.max(0, Math.floor(latest))));
+  });
+
+  const projectsFrames = [
+    "/projects_part_1.jpg",
+    "/projects_part_2.jpg",
+    "/projects_part_3.jpg",
+    "/projects_part_4.jpg",
+    "/projects_part_5.jpg"
+  ];
+
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [1.15, 1.0, 1.0, 0.9]);
+
   const nextSlide = () => {
     setIndex(prev => (prev + 1) % PROJECTS.length);
   };
@@ -1146,7 +1182,56 @@ function ProjectsCarousel() {
   const activeProject = PROJECTS[index];
 
   return (
-    <section style={{ position: "relative", padding: "6rem var(--grid-margin)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <section 
+      ref={projectsRef} 
+      onMouseMove={handleMouseMove} 
+      style={{ position: "relative", padding: "6rem var(--grid-margin)", borderBottom: "1px solid rgba(255,255,255,0.08)", overflow: "hidden" }}
+    >
+      {/* Background Scroll-Driven Animation (Full Cover) */}
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0
+        }}
+      >
+        <motion.div
+          style={{
+            width: "100%",
+            height: "100%",
+            scale: bgScale,
+            opacity: bgOpacity,
+            x: smoothX,
+            y: smoothY
+          }}
+        >
+          <img
+            key={frame}
+            src={projectsFrames[frame]}
+            alt="Projects hologram background"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.22,
+              mixBlendMode: "screen"
+            }}
+          />
+        </motion.div>
+        
+        {/* Soft radial overlay */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(circle at center, rgba(9, 9, 14, 0.15) 30%, var(--color-sky-canvas) 90%)",
+            pointerEvents: "none"
+          }}
+        />
+      </div>
+
       <div className="card-cloud carousel-grid" style={{
         position: "relative",
         zIndex: 10,
@@ -1496,6 +1581,7 @@ function EducationSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const [activeTab, setActiveTab] = useState("Core CS");
+  const educationRef = useRef(null);
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -1505,8 +1591,78 @@ function EducationSection() {
     mouseY.set(yOffset);
   };
 
+  const { scrollYProgress } = useScroll({
+    target: educationRef,
+    offset: ["start end", "end start"]
+  });
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 4.9]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setFrame(Math.min(4, Math.max(0, Math.floor(latest))));
+  });
+
+  const educationFrames = [
+    "/education_part_1.jpg",
+    "/education_part_2.jpg",
+    "/education_part_3.jpg",
+    "/education_part_4.jpg",
+    "/education_part_5.jpg"
+  ];
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [1.15, 1.0, 1.0, 0.9]);
+
   return (
-    <section id="education" className="sky-section" onMouseMove={handleMouseMove}>
+    <section id="education" ref={educationRef} className="sky-section" onMouseMove={handleMouseMove} style={{ position: "relative", overflow: "hidden" }}>
+      {/* Background Scroll-Driven Animation (Full Cover) */}
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0
+        }}
+      >
+        <motion.div
+          style={{
+            width: "100%",
+            height: "100%",
+            scale: bgScale,
+            opacity: bgOpacity,
+            x: smoothX,
+            y: smoothY
+          }}
+        >
+          <img
+            key={frame}
+            src={educationFrames[frame]}
+            alt="Education CS core background"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.22,
+              mixBlendMode: "screen"
+            }}
+          />
+        </motion.div>
+        
+        {/* Soft radial overlay */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(circle at center, rgba(9, 9, 14, 0.15) 30%, var(--color-sky-canvas) 90%)",
+            pointerEvents: "none"
+          }}
+        />
+      </div>
 
       <div style={{
         position: "relative",
@@ -1663,6 +1819,41 @@ function EducationSection() {
 function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const contactRef = useRef(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    mouseX.set((clientX - window.innerWidth / 2) * -0.025);
+    mouseY.set((clientY - window.innerHeight / 2) * 0.025);
+  };
+
+  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  const { scrollYProgress } = useScroll({
+    target: contactRef,
+    offset: ["start end", "end start"]
+  });
+
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 3.9]);
+  const [frame, setFrame] = useState(0);
+
+  useMotionValueEvent(frameIndex, "change", (latest) => {
+    setFrame(Math.min(3, Math.max(0, Math.floor(latest))));
+  });
+
+  const contactFrames = [
+    "/contact_part_1.jpg",
+    "/contact_part_2.jpg",
+    "/contact_part_3.jpg",
+    "/contact_part_4.jpg"
+  ];
+
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [1.15, 1.0, 1.0, 0.9]);
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value });
   
@@ -1676,7 +1867,51 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="sky-section">
+    <section id="contact" ref={contactRef} onMouseMove={handleMouseMove} className="sky-section" style={{ position: "relative", overflow: "hidden" }}>
+      {/* Background Scroll-Driven Animation (Full Cover) */}
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0
+        }}
+      >
+        <motion.div
+          style={{
+            width: "100%",
+            height: "100%",
+            scale: bgScale,
+            opacity: bgOpacity,
+            x: smoothX,
+            y: smoothY
+          }}
+        >
+          <img
+            key={frame}
+            src={contactFrames[frame]}
+            alt="Contact communications background"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.22,
+              mixBlendMode: "screen"
+            }}
+          />
+        </motion.div>
+        
+        {/* Soft radial overlay */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(circle at center, rgba(9, 9, 14, 0.15) 30%, var(--color-sky-canvas) 90%)",
+            pointerEvents: "none"
+          }}
+        />
+      </div>
       <div style={{
         position: "relative",
         zIndex: 10,
@@ -1867,67 +2102,7 @@ function Footer() {
   );
 }
 
-// ─── SCROLL ANIMATED CRYSTAL PRISM ──────────────────────────────────────────
 
-function ScrollPrism() {
-  const { scrollYProgress } = useScroll();
-  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 19]);
-  const [frame, setFrame] = useState(0);
-
-  useMotionValueEvent(frameIndex, "change", (latest) => {
-    const idx = Math.floor(latest) % 5;
-    setFrame(idx);
-  });
-
-  const prismFrames = [
-    "/glass_prism_hero.png",
-    "/glass_prism_secondary.png",
-    "/glass_prism_three.png",
-    "/glass_prism_four.png",
-    "/glass_prism_five.png"
-  ];
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      mouseX.set((clientX - window.innerWidth / 2) * 0.02);
-      mouseY.set((clientY - window.innerHeight / 2) * 0.02);
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  const smoothX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-  const smoothY = useSpring(mouseY, { stiffness: 50, damping: 20 });
-
-  return (
-    <motion.div
-      className="scroll-prism-container"
-      style={{
-        position: "fixed",
-        right: "6%",
-        top: "28%",
-        width: "clamp(240px, 20vw, 360px)",
-        height: "auto",
-        zIndex: 1,
-        pointerEvents: "none",
-        opacity: 0.35,
-        x: smoothX,
-        y: smoothY,
-        filter: "drop-shadow(0px 10px 30px rgba(43, 127, 255, 0.12))"
-      }}
-    >
-      <img
-        src={prismFrames[frame]}
-        alt="Animated Glass Prism"
-        style={{ width: "100%", height: "auto" }}
-      />
-    </motion.div>
-  );
-}
 
 // ─── MAIN PORTFOLIO COMPONENT ───────────────────────────────────────────────
 
@@ -2144,20 +2319,11 @@ export default function PortfolioRedesign() {
             justify-self: center !important;
           }
         }
-        .scroll-prism-container {
-          display: block;
-        }
-        @media (max-width: 1024px) {
-          .scroll-prism-container {
-            display: none !important;
-          }
-        }
       `}</style>
 
       {/* Main Premium Curtains and Cursor */}
       <CurtainLoader />
       <CursorFollower />
-      <ScrollPrism />
 
       <div className="sky-stage">
         <Navbar />
