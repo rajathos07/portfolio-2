@@ -1140,6 +1140,8 @@ function ProjectsCarousel() {
   const [index, setIndex] = useState(0);
   const autoplayTimer = useRef(null);
   const slideDuration = 6000;
+  const [mentorTab, setMentorTab] = useState(0);
+  const [foodTab, setFoodTab] = useState(0);
 
   const projectsRef = useRef(null);
   const mouseX = useMotionValue(0);
@@ -1331,7 +1333,7 @@ function ProjectsCarousel() {
             </div>
 
             {/* Screen */}
-            <div style={{ flex: 1, padding: "2rem", fontFamily: "monospace", fontSize: "12px", color: "var(--color-charcoal-text)", overflow: "hidden", position: "relative" }}>
+            <div style={{ flex: 1, padding: "1.2rem", fontFamily: "monospace", fontSize: "12px", color: "var(--color-charcoal-text)", overflow: "hidden", position: "relative" }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={index}
@@ -1342,42 +1344,66 @@ function ProjectsCarousel() {
                   style={{ height: "100%" }}
                 >
                   {index === 0 && (
-                    /* AI CODE MENTOR LOGS */
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%" }}>
-                      <div><span style={{ color: "var(--color-action-blue)" }}>import</span> AI <span style={{ color: "var(--color-action-blue)" }}>from</span> <span style={{ opacity: 0.8 }}>"@groq/sdk"</span>;</div>
-                      <div><span style={{ color: "var(--color-action-blue)" }}>const</span> mentor = <span style={{ color: "var(--color-action-blue)" }}>new</span> AI.Mentor();</div>
-                      <div style={{ color: "rgba(255,255,255,0.4)" }}>// Analysing dynamic schemas...</div>
-                      <div><span style={{ color: "var(--color-action-blue)" }}>await</span> mentor.review(database.schema);</div>
-                      
-                      <motion.div 
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        key="mentor-notif"
-                        style={{
-                          marginTop: "auto",
-                          backgroundColor: "rgba(255, 255, 255, 0.05)",
-                          border: "1px solid rgba(255, 255, 255, 0.1)",
-                          borderRadius: "8px",
-                          padding: "1rem",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "0.4rem"
-                        }}
-                      >
-                        <div style={{ display: "flex", justifyContent: "space-between", color: "var(--color-action-blue)", fontSize: "11px", fontWeight: "bold" }}>
-                          <span>💡 SYSTEM RECOMMENDATION</span>
-                          <span>JWT: OK</span>
-                        </div>
-                        <p style={{ color: "var(--color-charcoal-text)", fontSize: "11px", opacity: 0.85 }}>
-                          Database optimization found: Index queries in User schemas to improve search speed by 40%.
-                        </p>
-                      </motion.div>
+                    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                      {/* Mini Tabs Navigation */}
+                      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "8px", marginBottom: "8px" }}>
+                        {["Code Review", "Aptitude Quiz", "Dashboard"].map((tabName, idx) => (
+                          <button
+                            key={tabName}
+                            onClick={() => setMentorTab(idx)}
+                            style={{
+                              background: mentorTab === idx ? "rgba(255,255,255,0.08)" : "none",
+                              border: "none",
+                              borderRadius: "4px",
+                              padding: "4px 8px",
+                              fontFamily: "monospace",
+                              fontSize: "11px",
+                              color: mentorTab === idx ? "var(--color-cloud-white)" : "rgba(255,255,255,0.4)",
+                              cursor: "pointer"
+                            }}
+                          >
+                            {tabName}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Tab Content (Scrollable Screenshot Display) */}
+                      <div style={{ flex: 1, overflowY: "auto", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                        {mentorTab === 0 && (
+                          <img 
+                            src="/mentor_screenshot_1.png" 
+                            alt="Code Review Editor" 
+                            style={{ width: "100%", height: "auto", display: "block" }} 
+                          />
+                        )}
+                        {mentorTab === 1 && (
+                          <img 
+                            src="/mentor_screenshot_3.png" 
+                            alt="Aptitude Quiz" 
+                            style={{ width: "100%", height: "auto", display: "block" }} 
+                          />
+                        )}
+                        {mentorTab === 2 && (
+                          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                            <img 
+                              src="/mentor_screenshot_4.png" 
+                              alt="Progress Dashboard 1" 
+                              style={{ width: "100%", height: "auto", display: "block" }} 
+                            />
+                            <img 
+                              src="/mentor_screenshot_5.png" 
+                              alt="Progress Dashboard 2" 
+                              style={{ width: "100%", height: "auto", display: "block" }} 
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
 
                   {index === 1 && (
                     /* AI EXAM EVALUATION MOCKUP */
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)", padding: "1rem" }}>
                       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between" }}>
                         <span style={{ fontWeight: "bold" }}>OCR EXTRACTOR</span>
                         <span style={{ color: "var(--color-action-blue)", fontWeight: "bold" }}>COMPLETED</span>
@@ -1415,51 +1441,94 @@ function ProjectsCarousel() {
                   )}
 
                   {index === 2 && (
-                    /* INSTAFOODS LIVE SNAPSHOT MOCKUP */
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)" }}>
-                      <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontWeight: "bold", color: "#caff00" }}>🚴 INSTA-TRACKER v1.2</span>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "10px", color: "#caff00" }}>
-                          <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#caff00", display: "inline-block" }} />
-                          LIVE UPLINK
-                        </span>
-                      </div>
-                      
-                      <div style={{ fontSize: "11px", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                        <div><span style={{ opacity: 0.5 }}>Restaurant:</span> Nagarjuna Restaurant (Indiranagar)</div>
-                        <div><span style={{ opacity: 0.5 }}>Order Items:</span> 1x South Indian Biryani Feast, 1x Guntur Chicken</div>
-                        <div><span style={{ opacity: 0.5 }}>Delivery To:</span> Bengaluru, IN (12.9716° N)</div>
-                      </div>
-
-                      <div style={{ borderTop: "1px dashed rgba(255,255,255,0.1)", paddingTop: "0.5rem", display: "flex", flexDirection: "column", gap: "4px" }}>
-                        <span style={{ color: "var(--color-action-blue)", fontWeight: "bold", fontSize: "11px" }}>STATUS FEED:</span>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "2px", fontSize: "10px", opacity: 0.8, fontFamily: "monospace" }}>
-                          <div>[19:05:12] Order successfully placed (INR 680)</div>
-                          <div>[19:06:40] Kitchen accepted & packing meal</div>
-                          <div style={{ color: "#caff00" }}>[19:07:33] Out for delivery with Rider #07</div>
-                        </div>
+                    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                      {/* Mini Tabs Navigation */}
+                      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "8px", marginBottom: "8px" }}>
+                        {["Tracker", "Restaurants", "Menu"].map((tabName, idx) => (
+                          <button
+                            key={tabName}
+                            onClick={() => setFoodTab(idx)}
+                            style={{
+                              background: foodTab === idx ? "rgba(202, 255, 0, 0.1)" : "none",
+                              border: "none",
+                              borderRadius: "4px",
+                              padding: "4px 8px",
+                              fontFamily: "monospace",
+                              fontSize: "11px",
+                              color: foodTab === idx ? "#caff00" : "rgba(255,255,255,0.4)",
+                              cursor: "pointer"
+                            }}
+                          >
+                            {tabName}
+                          </button>
+                        ))}
                       </div>
 
-                      <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        key="tracker-progress"
-                        style={{
-                          marginTop: "auto",
-                          backgroundColor: "rgba(202, 255, 0, 0.08)",
-                          border: "1px solid #caff00",
-                          borderRadius: "6px",
-                          padding: "6px 12px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          fontSize: "11px",
-                          color: "#caff00",
-                          fontWeight: "bold"
-                        }}
-                      >
-                        <span>SHIPPING STATUS: IN TRANSIT (94%)</span>
-                        <span>ETA: 4 MINS</span>
-                      </motion.div>
+                      {/* Tab Content */}
+                      <div style={{ flex: 1, overflowY: "auto", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                        {foodTab === 0 && (
+                          /* INSTAFOODS LIVE SNAPSHOT MOCKUP */
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", height: "100%", color: "var(--color-charcoal-text)", padding: "1rem" }}>
+                            <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                              <span style={{ fontWeight: "bold", color: "#caff00" }}>🚴 INSTA-TRACKER v1.2</span>
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "10px", color: "#caff00" }}>
+                                <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#caff00", display: "inline-block" }} />
+                                LIVE UPLINK
+                              </span>
+                            </div>
+                            
+                            <div style={{ fontSize: "11px", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                              <div><span style={{ opacity: 0.5 }}>Restaurant:</span> Nagarjuna Restaurant (Indiranagar)</div>
+                              <div><span style={{ opacity: 0.5 }}>Order Items:</span> 1x South Indian Biryani Feast, 1x Guntur Chicken</div>
+                              <div><span style={{ opacity: 0.5 }}>Delivery To:</span> Bengaluru, IN (12.9716° N)</div>
+                            </div>
+
+                            <div style={{ borderTop: "1px dashed rgba(255,255,255,0.1)", paddingTop: "0.5rem", display: "flex", flexDirection: "column", gap: "4px" }}>
+                              <span style={{ color: "var(--color-action-blue)", fontWeight: "bold", fontSize: "11px" }}>STATUS FEED:</span>
+                              <div style={{ display: "flex", flexDirection: "column", gap: "2px", fontSize: "10px", opacity: 0.8, fontFamily: "monospace" }}>
+                                <div>[19:05:12] Order successfully placed (INR 680)</div>
+                                <div>[19:06:40] Kitchen accepted & packing meal</div>
+                                <div style={{ color: "#caff00" }}>[19:07:33] Out for delivery with Rider #07</div>
+                              </div>
+                            </div>
+
+                            <motion.div 
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              key="tracker-progress"
+                              style={{
+                                marginTop: "auto",
+                                backgroundColor: "rgba(202, 255, 0, 0.08)",
+                                border: "1px solid #caff00",
+                                borderRadius: "6px",
+                                padding: "6px 12px",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                fontSize: "11px",
+                                color: "#caff00",
+                                fontWeight: "bold"
+                              }}
+                            >
+                              <span>SHIPPING STATUS: IN TRANSIT (94%)</span>
+                              <span>ETA: 4 MINS</span>
+                            </motion.div>
+                          </div>
+                        )}
+                        {foodTab === 1 && (
+                          <img 
+                            src="/instafoods_screenshot_1.png" 
+                            alt="Instafoods Restaurants List" 
+                            style={{ width: "100%", height: "auto", display: "block" }} 
+                          />
+                        )}
+                        {foodTab === 2 && (
+                          <img 
+                            src="/instafoods_screenshot_2.png" 
+                            alt="Instafoods Menu Page" 
+                            style={{ width: "100%", height: "auto", display: "block" }} 
+                          />
+                        )}
+                      </div>
                     </div>
                   )}
                 </motion.div>
